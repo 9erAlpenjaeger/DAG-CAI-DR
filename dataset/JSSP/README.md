@@ -1,0 +1,1 @@
+Please refer to or fork https://github.com/zcaicaros/L2D/blob/main/DataGen/ in this directory for the data and dataloader for JSSP.
