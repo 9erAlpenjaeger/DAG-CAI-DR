@@ -12,7 +12,7 @@ from gymenvs.omcloudgym import OmCloudGym
 #from gymenvs.cloudgym_oneshot import CloudGym_oneshot
 from core.machine import MachineConfig
 from playground.DAG.utils.xml_reader import XMLReader
-from playground.DAG.utils.json_reader import JSONReader
+# from playground.DAG.utils.json_reader import JSONReader
 
 
 
