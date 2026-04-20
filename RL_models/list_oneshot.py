@@ -30,9 +30,6 @@ from RL_models.utils import (RectangleAttn,
                              GumbelSort, 
                              GumbelTopoSortInTuples, 
                              GumbelTopoSortAdj, 
-                             PtrNet_gat_CAI, 
-                             PtrNet_raw, 
-                             PtrNet_GAM, 
                              DemonstrationBuffer
                             )
 
@@ -772,9 +769,6 @@ class CustomActorCritic(MultiInputActorCriticPolicy):
         # latent_dim_pi = self.mlp_extractor.latent_dim_pi
         if self.attn_type == 'CAI' or self.attn_type == 'WOCAI':
             self.action_net = ActorNet(feature_dim = HIDDEN_DIM, attn_type = self.attn_type)
-        else:
-            self.action_net = ActorNet_PtrNet(feature_dim = HIDDEN_DIM, attn_type = self.attn_type)
-        self.tp_action_net = ActorNet_tpDispatch_only(feature_dim = HIDDEN_DIM)
         self.value_net = CriticNet(feature_dim = GOLBAL_EMB_DIM, pi_dim = 32)
         if self.ortho_init:
             module_gains = {
