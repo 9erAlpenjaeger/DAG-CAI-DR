@@ -75,17 +75,7 @@ def generate_envs(dag_graph, tpch_size, n_steps, GNN, dag_num, dag_num_for_eval,
     else:
         n_env_for_eval = None
 
-    if use_demonstrations:
-        demo_list = list()
-        for tpch_size in tpch_sizes:
-            demo_list.extend([get_demo(tpch_size, i) 
-                              for i in range(0, dag_num)])
-        demo_action = collect_demo(demo_list)
-        demo_buffer = DemonstrationBuffer(demo_action)
-    else:
-        demo_buffer = None
-
-    return n_env, n_env_for_eval, demo_buffer
+    return n_env, n_env_for_eval, None
 
         
 if __name__ == "__main__":
