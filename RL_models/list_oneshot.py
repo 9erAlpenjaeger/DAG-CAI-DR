@@ -29,8 +29,7 @@ from RL_models.utils import (RectangleAttn,
                              cat_list, 
                              GumbelSort, 
                              GumbelTopoSortInTuples, 
-                             GumbelTopoSortAdj, 
-                             DemonstrationBuffer
+                             GumbelTopoSortAdj
                             )
 
 from stable_baselines3.common.torch_layers import BaseFeaturesExtractor
@@ -833,17 +832,6 @@ class CustomActorCritic(MultiInputActorCriticPolicy):
                                                 old_machine_pri_ls = None)          
         return action_ls, machine_pri_ls, value_ls, log_prob_ls, rglr_ls
 
-'''
-def parse_args():
-    parse = argparse.ArgumentParser(description='initialize DRL parameters')
-    parse.add_argument('--dataset_name', type=str)
-    parse.add_argument('--n_steps', type=int)
-    parse.add_argument('--GNN_model', type=str)
-    args = parse.parse_args()
-    return args
-'''
-
-
 class CriticNet(torch.nn.Module):
     def __init__(self, feature_dim, pi_dim):
         super().__init__()
@@ -935,30 +923,4 @@ class ActorNet(torch.nn.Module):
             log_prob_ls = log_prob_ls.permute(1, 0, 2)
             return None, log_prob_ls, rglr_ls
 
-class ActorNet_tpDispatch_only(torch.nn.Module):
-    def __init__(self, feature_dim):
-        super().__init__()
-        self.t_p_dispatch = RectangleAttn(feature_dim, 1, feature_dim)
 
-    def forward(self, 
-                nodes_emb_ls, 
-                valid_masks_ls, 
-                is_evaluate = False, 
-                old_machine_pri_ls = None):
-        #if is_evaluate:
-        #    return old_machine_pri_ls
-        machine_pri_ls = []
-        for nodes_emb, valid_mask in zip(nodes_emb_ls, valid_masks_ls):
-            
-            valid_nodes_emb = nodes_emb[valid_mask]
-            node_num = valid_nodes_emb.shape[0]
-            machine_emb = torch.tensor([1,2,3,4], dtype=torch.float, device=nodes_emb.device)
-            machine_emb = machine_emb.unsqueeze(-1)
-            
-            machine_pri = self.t_p_dispatch(valid_nodes_emb, machine_emb)
-
-            machine_pri = F.pad(machine_pri, (0, 0, 0, max_node_num - node_num))
-            machine_pri_ls.append(machine_pri)
-        machine_pri_ls = cat_list(machine_pri_ls)
-        return machine_pri_ls
-        
