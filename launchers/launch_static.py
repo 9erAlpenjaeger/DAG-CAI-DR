@@ -8,7 +8,7 @@ from stable_baselines3.common.vec_env import DummyVecEnv, SubprocVecEnv, VecEnv
 
 from core.machine import MachineConfig
 from playground.DAG.utils.xml_reader import XMLReader
-from playground.DAG.utils.json_reader import JSONReader
+# from playground.DAG.utils.json_reader import JSONReader
 from gymenvs.cloudgym_oneshot import CloudGym_oneshot
 from RL_models import list_oneshot
 
@@ -77,17 +77,7 @@ def generate_envs(dataset_name, dataset_size, machine_num, variance, seed, n_ste
     else:
         n_env_for_eval = None
 
-    if use_demonstrations:
-        demo_list = list()
-        for dataset_name in dataset_names:
-            demo_list.extend([get_demo(dataset_name, dataset_size, workflow_index) 
-                              for workflow_index in range(workflow_num)])
-        demo_action = collect_demo(demo_list)
-        demo_buffer = DemonstrationBuffer(demo_action)
-    else:
-        demo_buffer = None
-
-    return n_env, n_env_for_eval, demo_buffer
+    return n_env, n_env_for_eval, None
 
 ###################################################################################################################################################################
 
